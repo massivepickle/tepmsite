@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<head>
+    <title>Learn</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="learn.css">
+    <!--Stylesheet below is NOT my work. 
+        Credit:
+            https://codepen.io/ig_design/pen/MWKVrNR
+            https://freefrontend.com/css-dropdown-menus/
+    -->
+    <link rel="stylesheet" href="dropdown.css">
+</head>
+<body>
+    <div id="select" class="gbox">
+        <div class="sec-center"> 	
+            <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
+            <label class="for-dropdown" for="dropdown">Select Level<i class="uil uil-arrow-down"></i></label>
+            <div class="section-dropdown"> 
+                <a href="javascript:level(1)">1: Common Bigrams<i class="uil uil-arrow-right"></i></a>
+                <a href="javascript:level(2)">2: Common Trigrams<i class="uil uil-arrow-right"></i></a>
+                <a href="javascript:level(3)">2: Common Quadrigrams<i class="uil uil-arrow-right"></i></a>
+                <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
+                <label class="for-dropdown-sub" for="dropdown-sub">Dropdown Sub <i class="uil uil-plus"></i></label>
+                <div class="section-dropdown-sub"> 
+                    <a href="#">Dropdown Link <i class="uil uil-arrow-right"></i></a>
+                    <a href="#">Dropdown Link <i class="uil uil-arrow-right"></i></a>
+                </div>
+                <a href="#">Dropdown Link <i class="uil uil-arrow-right"></i></a>
+                <a href="#">Dropdown Link <i class="uil uil-arrow-right"></i></a>
+            </div>
+            <div id="desc">Temporary</div>
+        </div>
+    </div>
+    <div class="words">
+        <div id="w1"><span>asdf</span></div>
+        <div id="w2"></div>
+        <div id="w3"></div>
+    </div>
+    <div class="gbox" id="kb">
+        <div class="r1"><ltr id="v">V</ltr><ltr id="l">L</ltr><ltr id="h">H</ltr><ltr id="d">D</ltr><ltr id="q">Q</ltr><ltr id="z">Z</ltr><ltr id="w">W</ltr><ltr id="o">O</ltr><ltr id="u">U</ltr><ltr class="comma 80" id=",.">,</ltr><ltr id="Shift">Shift</ltr></div>
+        <br>
+        <div class="r2"><p>&nbsp;&nbsp;&nbsp;&nbsp;</p><ltr id="s">S</ltr><ltr id="r">R</ltr><ltr id="n">N</ltr><ltr id="t">T</ltr><ltr id="g">G</ltr><ltr id="f">F</ltr><ltr id="y">Y</ltr><ltr id="a">A</ltr><ltr id="e">E</ltr><ltr id="i">I</ltr><ltr class="dash 222" id="-_">-</ltr></div>
+        <br>
+        <div class="r3"><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><ltr id="x">X</ltr><ltr id="j">J</ltr><ltr id="b">B</ltr><ltr id="m">M</ltr><ltr id="k">K</ltr><ltr id="c">C</ltr><ltr id="p">P</ltr><ltr class="quotations 188" id='&apos;&quot;'>'</ltr><ltr class="colon 190" id=";:">;</ltr><ltr class="mark 191" id="?!">?</ltr></div>
+    </div>
+    <script>
+        box = document.getElementById("dropdown")
+        box.addEventListener('keydown',(function(e) { var kc = e.keyCode; if (kc === 32){ e.preventDefault(); } }));
+    </script>
+    <script>
+        w1 = null
+        w2 = null
+        w3 = null
+        kb = null
+        window.addEventListener('load',function(){
+            w1 = document.getElementById("w1")
+            w2 = document.getElementById("w2")
+            w3 = document.getElementById("w3")
+            kb = document.getElementById("kb")
+            kb = kb.getElementsByTagName("ltr")
+            if(localStorage.lvl==null){
+                localStorage.lvl = 1
+            }
+            level(parseInt(localStorage.lvl))
+        })
+        /*
+        CREDITS FOR LISTS BELOW:
+        https://docs.google.com/document/d/1_a5Nzbkwyk1o0bvTctZrtgsee9jSP-6I0q3A0_9Mzm0/
+        https://www3.nd.edu/~busiforc/handouts/cryptography/Letter%20Frequencies.html
+        */
+        l1 = ['th', 'he', 'in', 'er', 'an', 're', 'on', 'at', 'en', 'nd', 'ti', 'es', 'or', 'te', 'of', 'ed', 'is', 'it', 'al', 'ar', 'st', 'to', 'nt', 'ng', 'se', 'ha', 'as', 'ou', 'io', 'le', 've', 'co', 'me', 'de', 'hi', 'ri', 'ro', 'ic', 'ne', 'ea', 'ra', 'ce', 'li', 'ch', 'll', 'be', 'ma', 'si', 'om', 'ur', 'ss', 'ee']
+        l2 = ['the', 'and', 'ing', 'ion', 'tio', 'ent', 'ati', 'for', 'her', 'ter', 'hat', 'tha', 'ere', 'ate', 'his', 'con', 'res', 'ver', 'all', 'ons', 'nce', 'men', 'ith', 'ted', 'ers', 'pro', 'thi', 'wit', 'are', 'ess', 'not', 'ive', 'was', 'ect', 'rea', 'com', 'eve', 'per', 'int', 'est', 'sta', 'cti', 'ica', 'ist', 'ear', 'ain', 'one', 'our', 'iti', 'rat']
+        l3 = ['that', 'ther', 'with', 'tion', 'here', 'ould', 'have', 'hich', 'whic', 'this', 'thin', 'they', 'atio', 'ever', 'from', 'ough', 'were', 'hing', 'ment']
+        console.log(l1.length,l2.length,l3.length)
+        function generate(x){
+            localStorage.lvl = x
+            gen=false
+            for(var i=0; i<kb.length; i++){
+                if(kb[i].classList.contains("next")){
+                    kb[i].classList.remove("next")
+                }
+            }
+            switch(parseInt(x)){
+                case 1:
+                    temp = Math.floor(Math.random()*100)%l1.length
+                    console.log(w1)
+                    w1.classList.add("active")
+                    w1.innerHTML = "<span>"+l1[temp][0]+"</span><span>"+l1[temp][1]+"</span>"
+                    /*prev = document.getElementsByClassName("next")
+                    prev.classList.remove("next")*/
+                    kb[l1[temp][0]].className = "next"
+                    w2.innerHTML = "<span>"+l1[temp][0]+"</span><span>"+l1[temp][1]+"</span>"
+                    w3.innerHTML = "<span>"+l1[temp][0]+"</span><span>"+l1[temp][1]+"</span>"
+                    break;
+                case 2:
+                    temp = Math.floor(Math.random()*100)%l2.length
+                    w1.classList.add("active")
+                    w1.innerHTML = "<span>"+l2[temp][0]+"</span><span>"+l2[temp][1]+"</span><span>"+l2[temp][2]+"</span>"
+                    /*prev = document.getElementsByClassName("next")
+                    prev.classList.remove("next")*/
+                    kb[l2[temp][0]].className = "next"
+                    w2.innerHTML = "<span>"+l2[temp][0]+"</span><span>"+l2[temp][1]+"</span><span>"+l2[temp][2]+"</span>"
+                    w3.innerHTML = "<span>"+l2[temp][0]+"</span><span>"+l2[temp][1]+"</span><span>"+l2[temp][2]+"</span>"
+                    break;
+                case 3:
+                    temp = Math.floor(Math.random()*100)%l3.length
+                    w1.classList.add("active")
+                    w1.innerHTML = "<span>"+l3[temp][0]+"</span><span>"+l3[temp][1]+"</span><span>"+l3[temp][2]+"</span><span>"+l3[temp][3]+"</span>"
+                    /*prev = document.getElementsByClassName("next")
+                    prev.classList.remove("next")*/
+                    kb[l3[temp][0]].className = "next"
+                    w2.innerHTML = "<span>"+l3[temp][0]+"</span><span>"+l3[temp][1]+"</span><span>"+l3[temp][2]+"</span><span>"+l3[temp][3]+"</span>"
+                    w3.innerHTML = "<span>"+l3[temp][0]+"</span><span>"+l3[temp][1]+"</span><span>"+l3[temp][2]+"</span><span>"+l3[temp][3]+"</span>"
+                    break;
+            }
+        }
+        last=""
+        gen = false
+        space = false
+        active = "w1"
+        window.addEventListener('keydown',function(k){
+            if(!k.repeat){
+                if(space){
+                    if(k.which==32){
+                        window[active].classList.remove("active")
+                        if(active=="w1"){
+                            active="w2"
+                        }else if(active=="w2"){
+                            active="w3"
+                        }else{
+                            active="w1"
+                            generate(localStorage.lvl)
+                        }
+                        window[active].classList.add("active")
+                        ch = window[active].getElementsByTagName("span")[0].innerText
+                        kb[ch].classList.add("next")
+                    }
+                }
+                if(!space){
+                    curr = document.getElementsByClassName("next")[0]
+                    intxt = curr.innerText
+                    if(!shift){
+                        intxt = intxt.toLowerCase()
+                    }
+                    spans = window[active].getElementsByTagName("span")
+                    dones = window[active].getElementsByClassName("done")
+                    if(k.key==intxt){
+                        curr.classList.remove("next")
+                        if(spans.length>dones.length+1){
+                            newtxt = spans[dones.length+1].innerText.toLowerCase()
+                            console.log(newtxt)
+                            kb[newtxt].classList.add("next")
+                        }else{
+                            space = true
+                        }
+                        spans[dones.length].classList.add("done")
+                    }else{
+                        spans[dones.length].id = "err"
+                    }
+                }
+                if(space && k.which==32){
+                    space = false
+                }
+            }
+        })
+        /*
+        window.addEventListener('keydown',function(k){
+            if(!k.repeat){
+                if(k.which==32 && space){
+                    for(var i=0; i<kb.length; i++){
+                        if(kb[i].classList.contains("next")){
+                            kb[i].classList.remove("next")
+                        }
+                    }
+                    console.log("yes")
+                    space = false
+                    n = document.getElementsByClassName("active")[0]
+                    if(n.id=="w1"){
+                        w2.classList.add("active")
+                    }else if(n.id=="w2"){
+                        w3.classList.add("active")
+                    }else{
+                        generate(localStorage.lvl)
+                    }
+                    n.classList.remove("active") 
+                    h = document.getElementsByClassName("active")[0].getElementsByTagName("span")[0].innerText
+                    kb[h].classList.add("next") 
+                }
+                perv = document.getElementsByClassName("next")
+                ids = []
+                for(var i=0; i<perv.length; i++){
+                    ids.push(perv[i].id)
+                }
+                prev = perv[0]
+                if(prev.id.length==1){
+                    a = document.getElementsByClassName("active")[0].getElementsByTagName("span")
+                    y = a
+                    b = null
+                    for(var i=0; i<a.length; i++){
+                        if(a[i].id!="done"){
+                            if(i>=a.length-1 && ids.includes(k.key.toLowerCase())){
+                                //document.getElementsByClassName("active")[0].classList.remove("active")
+                                space = true
+                                /*
+                                if(a.id=="w1"){
+                                    document.getElementById("w2").classList.add("active")
+                                    b = document.getElementsByClassName("active")[0].getElementsByTagName("span")[0]
+                                }else if(a.id=="w2"){
+                                    document.getElementById("w3").classList.add("active")
+                                    b = document.getElementsByClassName("active")[0].getElementsByTagName("span")[0]
+                                }else{
+                                }
+                                *//*
+                            }else{
+                                console.log(document.getElementsByClassName("active")[0],i+1,i,a.length-1)
+                                b = document.getElementsByClassName("active")[0].getElementsByTagName("span")[i+1]
+                                if(b){
+                                    b=b.innerText
+                                }
+                            }
+                            a=a[i]
+                            break
+                        }
+                    }
+                    if(k.key.toLowerCase()==prev.id){
+                        a.id="done"
+                        a.classList.add("done")
+                        if(b!=null){
+                            kb[b].classList.add("next")
+                        }
+                    }else if(k.which!=32){
+                        a.id="err"
+                    }
+                    if(space){
+                        for(var j=0; j<y.length; j++){
+                            y[j].classList.add("done")
+                            console.log(y[j])
+                        }
+                    }
+                }
+            }
+        })
+        window.addEventListener('keyup',function(k){
+            prev = document.getElementsByClassName("next")
+            chk = document.getElementsByClassName("done")
+            if(chk[0] != null && prev.length>1){
+                chk = chk[chk.length-1].innerHTML
+                for(var i=0; i<prev.length; i++){
+                    if(prev[i].innerText.toLowerCase()==chk){
+                        prev = prev[i]
+                    }
+                }
+            }else if(prev.length==1){
+                x = w1.getElementsByClassName("done")
+                if(x.length==w1.length){
+                    prev[0].classList.reemove("next")
+                }
+            }
+            if(k.key.toLowerCase()==prev.id){
+                prev.classList.remove("next")
+            }
+            if(space && prev[0]){
+                prev[0].classList.remove("next")
+            }
+            kb[k.key].classList.remove("next")
+        })
+        */
+        function level(x){
+            d = document.getElementById("desc")
+            s = ""
+            switch(x){
+                case 1:
+                    s = "L1: Common 2 letter combinations ("+l1.length.toString()+")"
+                    break;
+                case 2:
+                    s = "L2: Common 3 letter combinations ("+l2.length.toString()+")"
+                    break;
+                case 3:
+                    s = "L3: Common 4 letter combinations ("+l3.length.toString()+")"
+                    break;
+            }
+            d.innerText = s
+            generate(x)
+        }
+        /*box = null
+        function add(){
+            b1 = document.getElementsByClassName("r1")[0]
+            b2 = document.getElementsByClassName("r2")[0]
+            b3 = document.getElementsByClassName("r3")[0]
+            var r1 = "vlhdqzwou,"
+            var r2 = "srntgfyaei"
+            var r3 = "xjbmkcp"
+            for(var i=0; i<r1.length; i++){
+                b1.innerHTML+="<ltr id="+r1[i]+">"+r1[i].toUpperCase()+"</ltr>"
+            }
+            for(var i=0; i<r2.length; i++){
+                b2.innerHTML+="<ltr id="+r2[i]+">"+r2[i].toUpperCase()+"</ltr>"
+            }
+            for(var i=0; i<r3.length; i++){
+                b3.innerHTML+="<ltr id="+r3[i]+">"+r3[i].toUpperCase()+"</ltr>"
+            }
+        }
+        window.addEventListener('load', add);*/
+        var shift = false
+        var keys = []
+        var up = []
+        var exc = [186,222,188,190,191]
+        function highlight(){
+            for(var i=0; i<keys.length; i++){
+                x = document.getElementById(keys[i])
+                if(x==null){
+                    x = document.getElementsByClassName(keys[i])[0]
+                }
+                x.classList.add("on")
+            }
+            for(var i=0; i<up.length; i++){
+                x = document.getElementById(up[i])
+                if(x==null){
+                    x = document.getElementsByClassName(up[i])[0]
+                }
+                x.classList.remove("on")
+            }
+            if(keys.length>10){
+                keys=[]
+            }
+            if(shift){
+                x = document.getElementById("Shift")
+                x.classList.add("on")
+                for(var i=1; i<exc.length; i++){
+                    y = document.getElementsByClassName(exc[i])[0]
+                    y.innerText = y.id[1]
+                }
+                y = document.getElementsByClassName("comma")[0]
+                y.innerText = y.id[1]
+            }else{
+                x = document.getElementById("Shift")
+                x.classList.remove("on")
+                for(var i=1; i<exc.length; i++){
+                    y = document.getElementsByClassName(exc[i])[0]
+                    y.innerText = y.id[0]
+                }
+                y = document.getElementsByClassName("comma")[0]
+                y.innerText = y.id[0]
+            }
+            up = []
+        }
+        window.addEventListener('keydown',function(shh){
+            if(64<shh.which && shh.which<91){
+                if(shh.which == 80){
+                    if(keys[keys.length-1]!="comma"){
+                        keys.push("comma")
+                    }
+                }else{
+                    if(keys[keys.length-1]!=shh.key.toLowerCase()){
+                        keys.push(shh.key.toLowerCase())
+                    }
+                }
+                highlight()
+            }else if(exc.includes(shh.which)){
+                if(!['i','dash','quotations','colon','mark'].includes(keys[keys.length-1])){
+                    switch(shh.which){
+                        case 186:
+                            keys.push("i");
+                            break;
+                        case 222:
+                            keys.push("dash");
+                            break;
+                        case 188:
+                            keys.push("quotations")
+                            break;
+                        case 190:
+                            keys.push("colon")
+                            break;
+                        case 191:
+                            keys.push("mark")
+                            break;
+                    }
+                }
+                highlight()
+            }else if(shh.key=="Shift" && keys[keys.length-1]!="Shift"){
+                shift = true
+                highlight()
+            }
+        })
+        window.addEventListener('keyup',function(k){
+            if(shift && k.key == "Shift"){
+                shift = false
+            }else{
+                if(64<k.which && k.which<91){
+                    if(k.which == 80){
+                        keys.splice(keys.indexOf("comma"),1)
+                        up.push("comma")
+                    }else if(keys.indexOf(k.key.toLowerCase())>=0){
+                        keys.splice(keys.indexOf(k.key.toLowerCase()),1)
+                        up.push(k.key.toLowerCase())
+                    }
+                }else if(exc.includes(k.which)){
+                    switch(k.which){
+                        case 186:
+                            keys.splice(keys.indexOf("i"),1)
+                            up.push("i")
+                            break;
+                        case 222:
+                            keys.splice(keys.indexOf("dash"),1)
+                            up.push("dash")
+                            break;
+                        case 188:
+                            keys.splice(keys.indexOf("quotations"),1)
+                            up.push("quotations")
+                            break;
+                        case 190:
+                            keys.splice(keys.indexOf("colon"),1)
+                            up.push("colon")
+                            break;
+                        case 191:
+                            keys.splice(keys.indexOf("mark"),1)
+                            up.push("mark")
+                            break;
+                    }
+                    highlight()
+                }
+            }
+            highlight()
+        })
+    </script>
+</body>
+</html>
