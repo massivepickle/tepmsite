@@ -22,7 +22,7 @@ ltr {
 }
 
 #select {
-    background-color: #25242E;
+    background-image: url("black.jpg");
 }
 
 #Shift {
@@ -80,7 +80,8 @@ ltr:not(.next).on {
     font-size: 6.9em;
     padding-left: 1.5%;
     padding-right: 1.5%;
-    border-radius: 25%;
+    border-radius: 50px;
+    transition: all 3s !important;
 }
 
 .words span {
@@ -91,7 +92,6 @@ ltr:not(.next).on {
 
 .words span.alt {
     text-decoration: underline;
-    text-decoration-thickness: 10%;
     text-underline-offset: -90%;
 }
 
@@ -115,4 +115,21 @@ ltr:not(.next).on {
 .words span.done {
     color: rgba(255, 255, 255,0.5) !important;
     text-shadow: 0px 0px 0px rgb(0, 0, 0) !important;
+}
+
+.tips {
+    background-image: url("black.jpg");
+    margin-bottom: 1%;
+    margin-right: 5%;
+    margin-left: 5%;
+    border-radius: 1000px;
+    padding-bottom: 0.5%;
+    padding-left: 2%;
+    color: white;
+    font-size: 3em;
+    text-shadow: 0px 0px 10px white;
+}
+
+.tips #let {
+    color: rgb(255, 215, 53);
 }
