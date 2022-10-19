@@ -253,6 +253,13 @@ h5{
   padding-bottom: 1%;
   height:100%;
   box-shadow: 5px 0px 20px 0px rgba(0, 0, 0, 0.727);
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
 #topbar li{
