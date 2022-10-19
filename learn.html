@@ -63,6 +63,14 @@
         w3 = null
         kb = null
         tips = null
+	rs=[81,87,69,82,84,89,85,73,79,65,83,68,70,71,72,74,75,76,186,90,88,67,86,66,78,77]
+	emulating=true
+	/*
+	vlhdqzwou
+	srntgfyaei
+	xjbmkcp
+	*/
+	ks=['v', 'l', 'h', 'd', 'q', 'z', 'w', 'o', 'u', 's', 'r', 'n', 't', 'g', 'f', 'y', 'a', 'e', 'i', 'x', 'j', 'b', 'm', 'k', 'c', 'p']
         window.addEventListener('load',function(){
             w1 = document.getElementById("w1")
             w2 = document.getElementById("w2")
@@ -356,6 +364,9 @@
                     }
                 }
                 if(!space){
+		    if(emulating){
+		    	k.key=ks[rs.indexOf((k.which))]
+		    }
                     curr = document.getElementsByClassName("next")[0]
                     intxt = curr.innerText
                     if(!shift){
